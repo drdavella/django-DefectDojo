@@ -6,6 +6,7 @@ from lxml import etree
 import json
 
 from dojo.models import Finding
+import lxml.etree
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class SonarQubeParser(object):
             return self.get_json_items(json_content, test, self.mode)
         else:
             parser = etree.HTMLParser()
-            tree = etree.parse(filename, parser)
+            tree = etree.parse(filename, parser, parser=lxml.etree.XMLParser(resolve_entities=False))
             if self.mode not in [None, "detailed"]:
                 raise ValueError(
                     "Internal error: Invalid mode "
@@ -66,7 +67,7 @@ class SonarQubeParser(object):
             try:
                 issue_detail = rules[rule_id]
                 parser = etree.HTMLParser()
-                html_desc_as_e_tree = etree.fromstring(issue_detail["htmlDesc"], parser)
+                html_desc_as_e_tree = etree.fromstring(issue_detail["htmlDesc"], parser, parser=lxml.etree.XMLParser(resolve_entities=False))
                 issue_description = self.get_description(html_desc_as_e_tree)
                 logger.debug(issue_description)
                 issue_references = self.get_references(
