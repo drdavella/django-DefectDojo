@@ -43,7 +43,7 @@ class EdgescanAPI(object):
             url=url,
             headers=self.get_headers(),
             proxies=self.get_proxies(),
-        )
+        timeout=60)
         response.raise_for_status()
         return response.json()
 
