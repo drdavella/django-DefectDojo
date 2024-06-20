@@ -1,6 +1,6 @@
-import requests
 import json
 from json.decoder import JSONDecodeError
+from security import safe_requests
 
 
 class EdgescanAPI(object):
@@ -39,8 +39,7 @@ class EdgescanAPI(object):
         if self.options and "date" in self.options:
             url += f"&c[date_opened_after]={self.options['date']}"
 
-        response = requests.get(
-            url=url,
+        response = safe_requests.get(url=url,
             headers=self.get_headers(),
             proxies=self.get_proxies(),
         )
