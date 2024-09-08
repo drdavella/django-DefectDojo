@@ -4,6 +4,7 @@ https://github.com/microsoft/playwright/blob/main/utils/linux-browser-dependenci
 """
 
 import subprocess
+from security import safe_command
 
 
 def find_packages(library_name):
@@ -15,7 +16,7 @@ def find_packages(library_name):
 
 
 def run_command(cmd, cwd=None, env=None):
-    result = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, text=True)
+    result = safe_command.run(subprocess.run, cmd, cwd=cwd, env=env, capture_output=True, text=True)
     return result.stdout
 
 
